@@ -1,7 +1,7 @@
 CREATE DATABASE Athletes;
 USE Athletes;
 CREATE TABLE athlete(
-athleteId BINARY(16) NOT NULL,
+athleteId SERIAL NOT NULL,
 athleteFirstname VARCHAR (30),
 athleteLastname VARCHAR (39),
 athleteHighSchool VARCHAR (50),

@@ -1,28 +1,32 @@
 <?php
 namespace OpeyemiJonah\DatabasePractice01;
-require "install.php";
+//require_once ("autoload.php");
+//require_once(dirname(__DIR__, 1) . "/vendor/autoload.php");
+//require "install.php";
+//require ("config.php");
+use Ramsey\Uuid\Uuid;
 class PlayerProfile {
-	private $athleteId;
+	//private $athleteId;
 	private $firstname;
 	private $lastname;
 	private $height;
 	private $weight;
-	private $highschool;
+	private $highSchool;
 	private $college;
 	private $wingspan;
 	private $sport;
 
 
-	public function __construct($newAthleteId, $newFirstname, $newLastname, $newHeight, $newWeight, $newWingspan,
-										 $newHighschool,$newCollege,$newSport ) {
+	public function __construct( $newFirstname, $newLastname, $newHeight, $newWeight, $newWingspan,
+										 $newHighSchool,$newCollege,$newSport ) {
 try{
-$this->setAthleteId($newAthleteId);
+//$this->setAthleteId($newAthleteId);
 $this->setFirstname($newFirstname);
 $this->setLastname($newLastname);
 $this->setHeight($newHeight);
 $this->setWeight($newWeight);
 $this->setWingspan($newWingspan);
-$this->setHighschool($newHighschool);
+$this->setHighschool($newHighSchool);
 $this->setCollege($newCollege);
 $this->setSport($newSport);
 
@@ -66,8 +70,8 @@ public function getLastname(): string {
 	/**
 	 * @return mixed
 	 */
-	public function getHighschool():string {
-		return $this->getHighschool();
+	public function getHighSchool():string {
+		return $this->getHighSchool();
 	}
 
 	/**
@@ -112,7 +116,7 @@ public function setFirstname(string $newFirstname): void{
 			throw (new \RangeException("Input is more than required characters "));
 
 		}
-		$this->lasttname=$newLastname;
+		$this->lastname=$newLastname;
 
 	}
 //height
@@ -133,34 +137,36 @@ public function setFirstname(string $newFirstname): void{
 	//weight
 	public function setWeight(float $newWeight): void{
 //Making sure it fits the range
+		/*
 		if ($newWeight>5){
 			throw (new \RangeException("Invalid weight"));
 		}
-
+*/
 		$this->weight = $newWeight;
 	}
 
 	//wingspan
 	public function setWingspan(float $newWingspan): void{
 //Making sure it fits the range
+		/*
 		if ($newWingspan>5){
 			throw (new \RangeException("Invalid weight"));
 		}
-
+*/
 		$this->wingspan = $newWingspan;
 	}
 	//high-school
-	public function setHighschool(string $newHighschool): void{
+	public function setHighSchool(string $newHighSchool): void{
 		//Sanitize the data received
-		$newHighschool = trim($newHighschool);
-		$newHighschool = filter_var($newHighschool, FILTER_SANITIZE_STRING);
+		$newHighSchool = trim($newHighSchool);
+		$newHighSchool = filter_var($newHighSchool, FILTER_SANITIZE_STRING);
 
 		//Rnage check
-		if($newHighschool>50){
+		if($newHighSchool>50){
 			throw (new \RangeException("Name is more than what database can accept "));
 		}
 
-		$this->highschool = $newHighschool;
+		$this->highSchool = $newHighSchool;
 
 	}
 
@@ -176,21 +182,21 @@ public function setFirstname(string $newFirstname): void{
 			throw (new \RangeException("Name is more than what database can accept "));
 		}
 
-		$this->highschool = $newCollege;
+		$this->college = $newCollege;
 
 	}
 	//sport
-	public function setSport(string $newHighschool): void{
+	public function setSport(string $newSport): void{
 		//Sanitize the data received
-		$newHighschool = trim($newHighschool);
-		$newHighschool = filter_var($newHighschool, FILTER_SANITIZE_STRING);
+		$newSport = trim($newSport);
+		$newSport = filter_var($newSport, FILTER_SANITIZE_STRING);
 
 		//Rnage check
-		if($newHighschool>50){
+		if($newSport>50){
 			throw (new \RangeException("Name is more than what database can accept "));
 		}
 
-		$this->highschool = $newHighschool;
+		$this->sport = $newSport;
 
 	}
 
@@ -200,6 +206,48 @@ public function setFirstname(string $newFirstname): void{
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-public
+
+
+public function insert(\PDO $pdo): void{
+
+	/* $host = "localhost";
+	$username = "root";
+	$password = "";
+	$dbname = "player";
+	$dsn = "mysql:host=$host;dbname=$dbname";
+	$options = [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION];
+
+	$connection = new PDO($dsn,$username,$password)
+	*/
+
+	//"userId" => $this->userId->getBytes()
+
+$query = "INSERT INTO athlete(athleteFirstname, 
+	athleteLastname,
+	athleteHeight,
+	atheleteWeight,
+	athleteWingspan,
+	athleteHighSchool,
+	athleteCollege,
+	athleteSport) VALUE (:firstname, 
+	:lastname,
+	:height,
+	:weight
+	:wingspan,
+	:highScool,
+	:college,
+	:sport
+	)";
+$stmt = $pdo->prepare($query);
+//bind variables to placeholders
+$parameters = ["athleteFirstname"=>$this->firstname, "atheleteLastname"=>$this->lastname,"athleteHieght"=>$this->height,
+		"athleteWeight"=>$this->weight,
+		"atheleteWingspan"=>$this->wingspan,
+		"athleteHisghSchool"=>$this->highSchool,
+		"athleteCollege"=>$this->college,
+		"athleteSport"=>$this->sport];
+$stmt->execute($parameters);
+
+}
 
 }
